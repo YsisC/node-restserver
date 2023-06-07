@@ -1,6 +1,10 @@
 
 const { Router } = require('express');
 const { check } = require('express-validator');
+
+const { validarCampos } = require('../middlewares/validar-campos');
+const { isRoleValid, emailExiste, existeUsuarioId } = require('../helpers/db-validators');
+
 const {
     usuariosPut,
     usuariosGet,
@@ -8,9 +12,6 @@ const {
     usuariosPatch,
     ususariosDelete
 } = require('../controllers/user');
-const { validarCampos } = require('../middlewares/validar-campos');
-
-const { isRoleValid, emailExiste, existeUsuarioId } = require('../helpers/db-validators');
 
 const router = Router();
 
@@ -21,19 +22,16 @@ router.put('/:id', [
     check('id').custom(existeUsuarioId),
     check('rol').custom(isRoleValid),
     validarCampos,
-],
-    usuariosPut);
+], usuariosPut);
 
 router.post('/', [
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     check('password', 'El password debe de ser mas de 6 letras').isLength({ min: 6 }),
-    check('password', 'El password debe de ser maximo de 10 letras').isLength({ max: 10 }),
     check('correo', 'El correo no es valido').isEmail(),
     check('correo').custom(emailExiste),
     // check('rol', 'No es un rol válido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
     check('rol').custom(isRoleValid),
     validarCampos,
-
 ], ususariosPost);
 
 router.delete('/:id',[
@@ -44,4 +42,4 @@ router.delete('/:id',[
 
 router.patch('/', usuariosPatch);
 
-module.exports = router
+module.exports = router;
