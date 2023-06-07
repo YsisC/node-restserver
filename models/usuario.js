@@ -29,18 +29,19 @@ const UsuarioSchema = Schema({
         type: Boolean,
         default: true
     },
-   google: {
+    google: {
         type: Boolean,
         default: false
-    },
-
+    }
+    
 })
 
 // Para ocultar el pasword y version de la peticion
 
-UsuarioSchema.methods.toJSON = function() {
-    const { __v, password, ...usuario } = this.toObject();
+UsuarioSchema.methods.toJSON = function () {
+    const { __v, password, _id, ...usuario } = this.toObject();
+    usuario.uid = _id
     return usuario;
 }
 
-module.exports = model( 'Usuario', UsuarioSchema )
+module.exports = model('Usuario', UsuarioSchema );
