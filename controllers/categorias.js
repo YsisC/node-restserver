@@ -21,6 +21,7 @@ const obtenerCategorias = async (req = request, res = response) => {
     })
 
 }
+
 // ObtenerCategoria - populate {}
 const obtenerCategoria = async (req, res = response) => {
 

@@ -22,6 +22,8 @@ const usuariosGet = async (req = request, res = response) => {
         usuarios
     })
 }
+
+
 const ususariosPost = async (req, res = response) => {
 
     const { nombre, correo, password, rol } = req.body;
@@ -38,6 +40,7 @@ const ususariosPost = async (req, res = response) => {
         usuario
     });
 }
+
 const usuariosPut = async (req, res = response) => {
 
     const { id } = req.params;
