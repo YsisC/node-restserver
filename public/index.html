@@ -35,6 +35,12 @@
 
 
     <script>
+         console.log(window.location.hostname.includes('localhost'))
+
+var url = ( window.location.hostname.includes('localhost') )
+            ? 'http://localhost:8080/api/auth/google'
+            : 'https://restserver-curso-fher.herokuapp.com/api/auth/google';
+
         function handleCredentialResponse(response) {
 
             const body = { id_token: response.credential }
@@ -57,7 +63,7 @@
         // console.log('consent revoked');
         // });
         const button = document.getElementById('google_signout');
-        button.onclick = ( ) =>{
+        button.onclick =  async( ) =>{
         console.log(google.accounts.id)
         google.accounts.id.disableAutoSelect()
         google.accounts.id.revoke( localStorage.getItem('email'), done => {
