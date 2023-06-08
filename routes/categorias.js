@@ -2,38 +2,37 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { validarCampos  } = require('../middlewares');
+const { validarCampos, validarJWT } = require('../middlewares');
+const { crearCategoria, obtenerCategorias, actualizarCategoria, obtenerCategoria } = require('../controllers/categorias');
+const { existeCategoriaPorId } = require('../helpers/db-validators');
 
 
 const router = Router();
 
 //  Obtener todas las categorias - publico
-router.get('/', (req , res) =>{
-    return res.json({
-        msg: 'categoria'
-    })
-});
+router.get('/', obtenerCategorias);
 
 // Obtener una categoria por id - publico
-router.get('/:id', (req , res) =>{
-    return res.json({
-        msg: 'categoria id'
-    })
-});
+router.get('/:id',[
+    check('id').custom( existeCategoriaPorId),
+    validarCampos
+]
+, obtenerCategoria);
 
 // Crear categoria - privado - cualquier persona con un token válido
-router.post('/', (req , res) =>{
-    return res.json({
-        msg: 'post'
-    })
-});
+router.post('/', [
+    validarJWT,
+    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+    validarCampos
+], crearCategoria);
 
-router.put('/:id', (req , res) =>{
-    return res.json({
-        msg: 'put'
-    })
-});
-router.delete('/:id', (req , res) =>{
+router.put('/:id',[
+    validarJWT,
+    check('nombre','El nombre es obligatorio').not().isEmpty(),
+    validarCampos
+], actualizarCategoria );
+
+router.delete('/:id', (req, res) => {
     return res.json({
         msg: 'delete'
     })
